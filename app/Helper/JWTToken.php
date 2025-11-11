@@ -21,7 +21,6 @@ class JWTToken
         ];
         return JWT::encode($payload, $key, 'HS256');
     }
-
     public static function CreateTokenForVerify($userEmail, $id):string
     {
         $key = env('JWT_KEY');
@@ -34,7 +33,6 @@ class JWTToken
         ];
         return JWT::encode($payload, $key, 'HS256');
     }
-
     public static function VerifyToken($token):JsonResponse
     {
         try {

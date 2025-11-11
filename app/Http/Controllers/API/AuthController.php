@@ -120,5 +120,31 @@ class AuthController extends Controller
             return ResponseHelper::Out('failed', 'Something went wrong', $e->getMessage(), 500);
         }
     }
-
+    //user password reset
+    public function resetPassword(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'password' => 'required|string|min:6|confirmed',
+            ]);
+            if ($validator->fails()) {
+                return ResponseHelper::Out('failed', 'Validation Failed', $validator->errors(), 422);
+            }
+            $email = $request->header('email');
+            $id = $request->header('id');
+            $user = User::where('email', '=', $email)->where('id','=', $id)->select('id', 'email','password')->first();
+            if (!$user) {
+                if ($user == null) {
+                    return ResponseHelper::Out('failed','unauthorized',null,401);
+                }
+            }
+            //update password
+            $user->update([
+                'password' => Hash::make($request->input('password'))
+            ]);
+            return ResponseHelper::Out('success', 'Password set successful!',$user,200);
+        } catch (Exception $e) {
+            return ResponseHelper::Out('failed','Something went wrong',$e->getMessage(),500);
+        }
+    }
 }
