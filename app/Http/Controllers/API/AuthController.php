@@ -81,14 +81,14 @@ class AuthController extends Controller
             }
             $otp = rand(100000, 999999);
             Mail::to($email)->send(new SendOTP($otp,$user->title));
-            $user->update(['otp' => $otp,'email_verified_at' => Carbon::now()->addMinutes(10)]);
+            $user->update(['otp' => $otp,'email_verified_at' => Carbon::now()->addMinutes()]);
             return ResponseHelper::Out('success', 'OTP sent to your registered mail',$otp,200);
         } catch (Exception $e) {
             return ResponseHelper::Out('failed','Something went wrong',$e->getMessage(),500);
         }
     }
     //verify otp
-    public function verifyOtp(Request $request):JsonResponse
+    public function verifyOtp(Request $request): JsonResponse
     {
         try {
             $validator = Validator::make($request->all(), [
@@ -100,17 +100,26 @@ class AuthController extends Controller
             $email = $request->input('email');
             $otp = $request->input('otp');
             //check authentication
-            $user = User::where('email', '=', $email)->where('otp', '=', $otp)->select('id', 'email', 'otp')->first();
+            $user = User::where('email', '=', $email)
+                ->where('otp', '=', $otp)
+                ->select('id', 'email', 'otp', 'email_verified_at')
+                ->first();
             if ($user == null) {
-                return ResponseHelper::Out('failed','unauthorized',null,401);
+                return ResponseHelper::Out('failed', 'unauthorized', null, 401);
+            }
+            //Check if OTP expired
+            if (Carbon::now()->greaterThan(Carbon::parse($user->email_verified_at))) {
+                return ResponseHelper::Out('failed', 'OTP expired', null, 403);
             }
             //Create Token For Reset Password
             $token = JWTToken::CreateToken($email, $user->id);
             $user->update(['otp' => '0']);
-            return ResponseHelper::Out('success', 'Otp verification successful!',$user,200)->cookie('token', $token, 525600);
-        }  catch (Exception $e) {
-            return ResponseHelper::Out('failed','Something went wrong',$e->getMessage(),500);
+            return ResponseHelper::Out('success', 'Otp verification successful!', $user, 200)
+                ->cookie('token', $token, 525600);
+        } catch (Exception $e) {
+            return ResponseHelper::Out('failed', 'Something went wrong', $e->getMessage(), 500);
         }
     }
+
 
 }
