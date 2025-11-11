@@ -5,6 +5,7 @@ namespace App\Helper;
 use Exception;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Illuminate\Http\JsonResponse;
 
 class JWTToken
 {
@@ -16,7 +17,7 @@ class JWTToken
             'iat' => time(),
             'exp' => time() + 60*60*30,
             'userEmail' => $userEmail,
-            'userid' => $id,
+            'userId' => $id,
         ];
         return JWT::encode($payload, $key, 'HS256');
     }
@@ -29,27 +30,23 @@ class JWTToken
             'iat' => time(),
             'exp' => time() + 60 * 60*60,
             'userEmail' => $userEmail,
-            'userid' => $id
+            'userId' => $id
         ];
         return JWT::encode($payload, $key, 'HS256');
     }
 
-    public static function VerifyToken($token):string|object|array
+    public static function VerifyToken($token):JsonResponse
     {
         try {
             if($token == null){
-                return "unauthorized";
+                return ResponseHelper::Out('failed', 'unauthorized', null, 401);
             } else{
                 $key = env('JWT_KEY');
                 $decode = JWT::decode($token, new Key($key, 'HS256'));
-                return [
-                    'email' => $decode->userEmail,
-                    'user_id' => $decode->userid
-                ];
+                return ResponseHelper::Out('success', 'Token verification successful!', $decode, 200);
             }
-
         } catch (Exception $e) {
-            return "unauthorized";
+            return ResponseHelper::Out('failed', 'unauthorized', null, 401);
         }
     }
 }
