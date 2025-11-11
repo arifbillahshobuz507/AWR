@@ -87,5 +87,30 @@ class AuthController extends Controller
             return ResponseHelper::Out('failed','Something went wrong',$e->getMessage(),500);
         }
     }
+    //verify otp
+    public function verifyOtp(Request $request):JsonResponse
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'otp' => 'required|min:6'
+            ]);
+            if ($validator->fails()) {
+                return ResponseHelper::Out('failed', 'Validation Failed', $validator->errors(), 422);
+            }
+            $email = $request->input('email');
+            $otp = $request->input('otp');
+            //check authentication
+            $user = User::where('email', '=', $email)->where('otp', '=', $otp)->select('id', 'email', 'otp')->first();
+            if ($user == null) {
+                return ResponseHelper::Out('failed','unauthorized',null,401);
+            }
+            //Create Token For Reset Password
+            $token = JWTToken::CreateToken($email, $user->id);
+            $user->update(['otp' => '0']);
+            return ResponseHelper::Out('success', 'Otp verification successful!',$user,200)->cookie('token', $token, 525600);
+        }  catch (Exception $e) {
+            return ResponseHelper::Out('failed','Something went wrong',$e->getMessage(),500);
+        }
+    }
 
 }
