@@ -9,9 +9,9 @@
         <p style="font-size:0.9em;">Regards,<br />{{env('app_name')}}</p>
         <hr style="border:none;border-top:1px solid #eee" />
         <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
-            <p>{{env('app_name')}} Inc</p>
-            <p>1600 Amphitheatre Parkway</p>
-            <p>California</p>
+            <p>{{env('app_name')}}</p>
+            <p> Pragpur, Daulotpur, Ksuhtia </p>
+            <p>Bangladesh</p>
         </div>
     </div>
 </div>
