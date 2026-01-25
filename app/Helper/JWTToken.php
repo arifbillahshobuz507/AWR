@@ -37,14 +37,14 @@ class JWTToken
     {
         try {
             if($token == null){
-                return ResponseHelper::Out('failed', 'unauthorized', null, 401);
+                return ResponseHelper::error('unauthorized', null, 401);
             } else{
                 $key = env('JWT_KEY');
                 $decode = JWT::decode($token, new Key($key, 'HS256'));
-                return ResponseHelper::Out('success', 'Token verification successful!', $decode, 200);
+                return ResponseHelper::success('Token verification successful!', $decode);
             }
         } catch (Exception $e) {
-            return ResponseHelper::Out('failed', 'unauthorized', null, 401);
+            return ResponseHelper::error('unauthorized', null, 401);
         }
     }
 }

@@ -28,16 +28,16 @@ class AuthController extends Controller
                 'password' => 'required'
             ]);
             if ($validator->fails()) {
-                return ResponseHelper::Out('failed', 'Validation Failed', $validator->errors(), 422);
+                return ResponseHelper::error('Validation Failed', $validator->errors(), 422);
             }
             $user = User::create([
                 'title' => $request->input('title'),
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password'))
             ]);
-            return ResponseHelper::Out('success','User registered successfully',$user,201);
+            return ResponseHelper::success('User registered successfully',$user,201);
         } catch (Exception $e) {
-            return ResponseHelper::Out('failed','Something went wrong',$e->getMessage(),500);
+            return ResponseHelper::error('Something went wrong',$e->getMessage());
         }
     }
     //user login
@@ -50,18 +50,18 @@ class AuthController extends Controller
             ]);
             //check validation
             if ($validator->fails()) {
-                return ResponseHelper::Out('failed', 'Validation Failed', $validator->errors(), 422);
+                return ResponseHelper::error('Validation Failed', $validator->errors(), 422);
             }
             //get user
             $user = User::where('email', $request->input('email'))->select('id','password', 'email')->first();
             if (!$user || !Hash::check($request->input('password'), $user->password)) {
-                return ResponseHelper::Out('failed','Invalid email or password',null,401);
+                return ResponseHelper::error('Invalid email or password',$user,401);
             }
             // set token
             $token = JWTToken::CreateToken($user->email, $user->id);
-            return ResponseHelper::Out('success', 'Login successful', $user, 200)->cookie('token', $token, 525600);
+            return ResponseHelper::success( 'Login successful', $user)->cookie('token', $token, 525600);
         } catch (Exception $e) {
-            return ResponseHelper::Out('failed','Something went wrong',$e->getMessage(),500);
+            return ResponseHelper::error('Something went wrong',$e->getMessage());
         }
     }
     // send otp
@@ -72,19 +72,19 @@ class AuthController extends Controller
                 'email' => 'required|email'
             ]);
             if ($validator->fails()) {
-                return ResponseHelper::Out('failed', 'Validation Failed', $validator->errors(), 422);
+                return ResponseHelper::error('Validation Failed', $validator->errors(), 422);
             }
             $email= $request->input('email');
-            $user = User::where('email', '=', $email)->select('id', 'email', 'otp', 'email_verified_at')->first();
+            $user = User::where('email', '=', $email)->select('id', 'title', 'email', 'otp', 'email_verified_at')->first();
             if ($user == null) {
-                return ResponseHelper::Out('failed','unauthorized',null,401);
+                return ResponseHelper::error('unauthorized',null,401);
             }
             $otp = rand(100000, 999999);
             Mail::to($email)->send(new SendOTP($otp,$user->title));
-            $user->update(['otp' => $otp,'email_verified_at' => Carbon::now()->addMinutes()]);
-            return ResponseHelper::Out('success', 'OTP sent to your registered mail',$otp,200);
+            $user->update(['otp' => $otp,'email_verified_at' => Carbon::now()->addMinutes(5)]);
+            return ResponseHelper::success('OTP sent to your registered mail',$otp);
         } catch (Exception $e) {
-            return ResponseHelper::Out('failed','Something went wrong',$e->getMessage(),500);
+            return ResponseHelper::error('Something went wrong',$e->getMessage(),500);
         }
     }
     //verify otp
@@ -95,7 +95,7 @@ class AuthController extends Controller
                 'otp' => 'required|min:6'
             ]);
             if ($validator->fails()) {
-                return ResponseHelper::Out('failed', 'Validation Failed', $validator->errors(), 422);
+                return ResponseHelper::error('Validation Failed', $validator->errors(), 422);
             }
             $email = $request->input('email');
             $otp = $request->input('otp');
@@ -105,19 +105,19 @@ class AuthController extends Controller
                 ->select('id', 'email', 'otp', 'email_verified_at')
                 ->first();
             if ($user == null) {
-                return ResponseHelper::Out('failed', 'unauthorized', null, 401);
+                return ResponseHelper::error('unauthorized', null, 401);
             }
             //Check if OTP expired
             if (Carbon::now()->greaterThan(Carbon::parse($user->email_verified_at))) {
-                return ResponseHelper::Out('failed', 'OTP expired', null, 403);
+                return ResponseHelper::error( 'OTP expired', null, 403);
             }
             //Create Token For Reset Password
             $token = JWTToken::CreateToken($email, $user->id);
             $user->update(['otp' => '0']);
-            return ResponseHelper::Out('success', 'Otp verification successful!', $user, 200)
+            return ResponseHelper::success('Otp verification successful!', $user)
                 ->cookie('token', $token, 525600);
         } catch (Exception $e) {
-            return ResponseHelper::Out('failed', 'Something went wrong', $e->getMessage(), 500);
+            return ResponseHelper::error('Something went wrong', $e->getMessage());
         }
     }
     //user password reset
@@ -128,23 +128,58 @@ class AuthController extends Controller
                 'password' => 'required|string|min:6|confirmed',
             ]);
             if ($validator->fails()) {
-                return ResponseHelper::Out('failed', 'Validation Failed', $validator->errors(), 422);
+                return ResponseHelper::error('Validation Failed', $validator->errors(), 422);
             }
             $email = $request->header('email');
             $id = $request->header('id');
             $user = User::where('email', '=', $email)->where('id','=', $id)->select('id', 'email','password')->first();
             if (!$user) {
                 if ($user == null) {
-                    return ResponseHelper::Out('failed','unauthorized',null,401);
+                    return ResponseHelper::error('unauthorized',null,401);
                 }
             }
             //update password
             $user->update([
                 'password' => Hash::make($request->input('password'))
             ]);
-            return ResponseHelper::Out('success', 'Password set successful!',$user,200);
+            return ResponseHelper::success('Password set successful!',$user);
         } catch (Exception $e) {
-            return ResponseHelper::Out('failed','Something went wrong',$e->getMessage(),500);
+            return ResponseHelper::error('Something went wrong',$e->getMessage());
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //Frontend Methods
+    //user Login
+    public function userLogin(Request $request)
+    {
+        return view('Auth.userLogin');
+    }    public function userRegistration(Request $request)
+    {
+        return view('Auth.userRegister');
+    }
+    public function userSendOtp(Request $request)
+    {
+        return view('Auth.userSendOtp');
+    }
+    public function userVerifyOtp(Request $request)
+    {
+        return view('Auth.userVerifyOtp');
+    }
+    public function userResetPassword(Request $request)
+    {
+        return view('Auth.userResetPassword');
+    }
+
 }
