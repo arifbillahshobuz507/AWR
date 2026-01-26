@@ -24,8 +24,8 @@ class AuthController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string',
-                'email' => 'required|email',
-                'password' => 'required'
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|min:6'
             ]);
             if ($validator->fails()) {
                 return ResponseHelper::error('Validation Failed', $validator->errors(), 422);
@@ -55,7 +55,7 @@ class AuthController extends Controller
             //get user
             $user = User::where('email', $request->input('email'))->select('id', 'password', 'email')->first();
             if (!$user || !Hash::check($request->input('password'), $user->password)) {
-                return ResponseHelper::error('Invalid email or password', $user, 401);
+                return ResponseHelper::error('Invalid email or password', null, 401);
             }
             // set token
             $token = JWTToken::CreateToken($user->email, $user->id);

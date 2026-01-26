@@ -15,9 +15,3 @@ Route::middleware('tokenVerify')->group(function () {
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
     Route::get('/reset-password', [AuthController::class, 'userResetPassword']);
 });
-
-
-
-
-
-

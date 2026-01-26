@@ -16,11 +16,4 @@ class ResponseHelper
     {
         return response()->json(['status' => 'failed', 'message' => $msg,'errors'=>$error, 'code'=> $code],$code);
     }
-//    public static function Out($status, $message, $data, $code): JsonResponse{
-//        return response()->json([
-//            'status'=>$status,
-//            'message'=>$message,
-//            'data'=>$data,
-//        ],'code'=>$code);
-//    }
 }
