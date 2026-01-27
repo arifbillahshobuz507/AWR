@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('gust/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('gust/css/style.css') }}" />
     <link href="{{ asset('gust/css/toastify.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('gust/css/progress.css') }}" rel="stylesheet" />
     <!-- Colors Css -->
     <link id="color-switcher" type="text/css" rel="stylesheet" href="{{ asset('gust/css/red.css') }}" />
 </head>

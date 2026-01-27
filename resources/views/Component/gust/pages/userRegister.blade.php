@@ -5,7 +5,7 @@
                 <div class="hero-wrap rounded shadow-lg p-4 py-sm-5 px-sm-5 my-4">
                     <div class="hero-mask opacity-9 bg-dark"></div>
                     <div class="hero-content">
-                     <div class="text-center mb-3">
+                        <div class="text-center mb-3">
                             <img src="{{ asset('gust/img/logo.png') }}" height="100" width="100"
                                 style="border-radius:10px;" alt="AWR">
                         </div>
@@ -42,7 +42,8 @@
                                         Me</label>
                                 </div>
                             </div>
-                            <div class="col text-end"><a class="text-2 link-light" href="{{ route('sendOtp') }}">Forgot
+                            <div class="col text-end"><a class="text-2 link-light" href="{{ route('sendOtp') }}"
+                                    style="text-decoration: none">Forgot
                                     Password ?</a></div>
                         </div>
 
@@ -52,7 +53,7 @@
                             <hr class="flex-grow-1 border-light">
                         </div>
                         <p class="text-2 text-white-50 text-center mb-0"><a class="text-3 link-light"
-                                href="{{ route('login') }}">Sign In</a></p>
+                                href="{{ route('login') }}" style="text-decoration: none">Sign In</a></p>
                     </div>
                 </div>
             </div>
