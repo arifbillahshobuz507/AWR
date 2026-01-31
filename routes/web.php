@@ -14,7 +14,6 @@ Route::get('/404', function () {
 Route::fallback(function () {
     return redirect()->route('force.redirect');
 });
-Route::post('/send-otp', [AuthController::class, 'sendOtp']);
 
 
 // Frontend Routes

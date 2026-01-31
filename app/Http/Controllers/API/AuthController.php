@@ -13,8 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use function Laravel\Prompts\select;
 
 class AuthController extends Controller
@@ -83,7 +83,6 @@ class AuthController extends Controller
             $otp = rand(100000, 999999);
             Mail::to($email)->send(new SendOTP($otp, $user->title));
             $user->update(['otp' => $otp, 'email_verified_at' => Carbon::now()->addMinutes(5)]);
-            Session::put(['email',  $email]);
             return ResponseHelper::success('OTP sent to your registered mail', $otp);
         } catch (Exception $e) {
             return ResponseHelper::error('Something went wrong', $e->getMessage(), 500);

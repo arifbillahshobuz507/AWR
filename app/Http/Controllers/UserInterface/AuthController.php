@@ -45,28 +45,4 @@ class AuthController extends Controller
     {
         return view('gust.pages.userResetPassword');
     }
-    // send otp
-    public function sendOtp(Request $request): JsonResponse
-    {
-        try {
-            $validator = Validator::make($request->all(), [
-                'email' => 'required|email'
-            ]);
-            if ($validator->fails()) {
-                return ResponseHelper::error('Validation Failed', $validator->errors(), 422);
-            }
-            $email = $request->input('email');
-            $user = User::where('email', '=', $email)->select('id', 'title', 'email', 'otp', 'email_verified_at')->first();
-            if ($user == null) {
-                return ResponseHelper::error('unauthorized', null, 401);
-            }
-            $otp = rand(100000, 999999);
-            Mail::to($email)->send(new SendOTP($otp, $user->title));
-            $user->update(['otp' => $otp, 'email_verified_at' => Carbon::now()->addMinutes(5)]);
-            Session::put('email',  $email);
-            return ResponseHelper::success('OTP sent to your registered mail', $otp);
-        } catch (Exception $e) {
-            return ResponseHelper::error('Something went wrong', $e->getMessage(), 500);
-        }
-    }
 }
