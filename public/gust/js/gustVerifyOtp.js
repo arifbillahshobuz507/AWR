@@ -52,7 +52,6 @@ async function verifyOtp() {
         errorToast("Please enter complete OTP");
         return;
     }
-
     try {
         showLoader();
 
