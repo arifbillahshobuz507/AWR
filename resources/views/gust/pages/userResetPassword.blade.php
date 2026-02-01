@@ -1,1 +1,11 @@
-@include('Component.Auth.userResetPassword')
+@extends('gust.layout.master')
+@section('title')
+    Reset Password
+@endsection
+@section('content')
+    @include('component.gust.pages.userResetPassword')
+@endsection
+@push('scripts')
+    <script src="{{ asset('gust/js/gustResetPassword.js') }}"></script>
+@endpush
+    

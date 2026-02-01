@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\UserInterface\AuthController as UserInterfaceAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,5 +15,5 @@ Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
 
 Route::middleware('tokenVerify')->group(function () {
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
-    Route::get('/reset-password', [AuthController::class, 'userResetPassword']);
+    Route::get('/reset-password', [UserInterfaceAuthController::class, 'userResetPassword']);
 });

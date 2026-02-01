@@ -65,9 +65,9 @@ async function verifyOtp() {
 
         if (res.data.status === "success") {
             successToast(res.data.message || "OTP verified successfully");
-
             setTimeout(() => {
-                window.location.href = "/login";
+                sessionStorage.removeItem("email");
+                window.location.href = "/api/reset-password";
             }, 1500);
         } else {
             errorToast(res.data.message || "Invalid OTP");
@@ -82,5 +82,31 @@ async function verifyOtp() {
         }
 
         console.error("Verify OTP Error:", error);
+    }
+}
+async function sendOtpAgen() {
+    try {
+        const email = sessionStorage.getItem("email");
+        showLoader();
+        const res = await axios.post("/api/send-otp", {
+            email: email,
+        });
+        hideLoader();
+        if (res.data.status === "success") {
+            successToast(res.data.message);
+            setTimeout(() => {
+                window.location.href = "verify-otp";
+            }, 2000);
+        } else {
+            errorToast(res.data.message || "Something went wrong");
+        }
+    } catch (error) {
+        hideLoader();
+        if (error.response) {
+            errorToast(error.response.data.message || "Server error");
+        } else {
+            errorToast("Network error. Please try again.");
+        }
+        console.error("OTP Error:", error);
     }
 }

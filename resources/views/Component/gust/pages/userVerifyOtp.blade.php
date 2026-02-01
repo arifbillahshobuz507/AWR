@@ -9,11 +9,10 @@
                                 title="Oxyy"><img src="{{ asset('gust/img/logo.png') }}" height="100" width="100"
                                     style="border-radius:10px;" alt="AWR"></a> </div>
                         <h4 class="text-white mb-4">Verify Your Email</h4>
-                        <p class="text-light mb-4">Enter the verification code we sent to <br>
-                            <span class="text-white text-4">***********</span>
+                        <p class="text-light mb-4">Enter the verification code<br>
                         </p>
                         <div class="form-dark">
-                            <div class="row g-2 justify-content-center mb-2">
+                            <div class="row g-2 justify-content-center mb-5">
                                 <div class="col-2"><input class="form-control text-center otp-input" maxlength="1"
                                         inputmode="numeric"></div>
                                 <div class="col-2"><input class="form-control text-center otp-input" maxlength="1"
@@ -27,12 +26,10 @@
                                 <div class="col-2"><input class="form-control text-center otp-input" maxlength="1"
                                         inputmode="numeric"></div>
                             </div>
-
-
                             <button class="btn btn-primary w-100 mb-3" onclick="verifyOtp()">Verify OTP</button>
                         </div>
                         <p class="text-white-50 text-2 mb-0">Not received your code? <a class="text-3 link-light"
-                                href="#" style="text-decoration: none">Resend code</a></p>
+                                href="#" style="text-decoration: none" onclick="sendOtpAgen()">Resend code</a></p>
                     </div>
                 </div>
             </div>

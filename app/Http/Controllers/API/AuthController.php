@@ -126,7 +126,7 @@ class AuthController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'password' => 'required|string|min:6|confirmed',
+                'password' => 'required|string|min:8',
             ]);
             if ($validator->fails()) {
                 return ResponseHelper::error('Validation Failed', $validator->errors(), 422);
@@ -143,7 +143,7 @@ class AuthController extends Controller
             $user->update([
                 'password' => Hash::make($request->input('password'))
             ]);
-            return ResponseHelper::success('Password set successful!', $user);
+            return ResponseHelper::success('Password set successful!', $user)->cookie('token', '', -1);
         } catch (Exception $e) {
             return ResponseHelper::error('Something went wrong', $e->getMessage());
         }
