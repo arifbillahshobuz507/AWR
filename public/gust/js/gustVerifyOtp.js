@@ -66,7 +66,7 @@ async function verifyOtp() {
             successToast(res.data.message || "OTP verified successfully");
             setTimeout(() => {
                 sessionStorage.removeItem("email");
-                window.location.href = "/api/reset-password";
+                window.location.href = "/reset-password";
             }, 1500);
         } else {
             errorToast(res.data.message || "Invalid OTP");

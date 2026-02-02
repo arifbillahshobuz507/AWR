@@ -122,7 +122,7 @@ class AuthController extends Controller
         }
     }
     //user password reset
-    public function resetPassword(Request $request)
+    public function resetPassword(Request $request): JsonResponse
     {
         try {
             $validator = Validator::make($request->all(), [
@@ -146,6 +146,15 @@ class AuthController extends Controller
             return ResponseHelper::success('Password set successful!', $user)->cookie('token', '', -1);
         } catch (Exception $e) {
             return ResponseHelper::error('Something went wrong', $e->getMessage());
+        }
+    }
+    //logout
+    public function logout(): JsonResponse
+    {
+        try {
+            return ResponseHelper::success('Password set successful!', null)->cookie('token', '', -1);
+        } catch (Exception $e) {
+            return ResponseHelper::error('unauthorized', $e->getMessage());
         }
     }
 }

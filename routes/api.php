@@ -15,5 +15,5 @@ Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
 
 Route::middleware('tokenVerify')->group(function () {
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
-    Route::get('/reset-password', [UserInterfaceAuthController::class, 'userResetPassword']);
+    Route::post('logout', [AuthController::class, 'logout']);
 });
