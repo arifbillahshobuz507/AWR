@@ -22,6 +22,5 @@ Route::get('/registration', [AuthController::class, 'userRegistration'])->name('
 Route::get('/send-otp', [AuthController::class, 'userSendOtp'])->name('sendOtp');
 Route::get('/verify-otp', [AuthController::class, 'userVerifyOtp'])->name('verifyOtp');
 Route::middleware('tokenVerify')->group(function () {
-    Route::get('/reset-password', [UserInterfaceAuthController::class, 'userResetPassword']);
-    Route::post();
+    Route::get('/reset-password', [AuthController::class, 'userResetPassword']);
 });
