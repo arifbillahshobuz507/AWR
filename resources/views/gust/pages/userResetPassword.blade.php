@@ -3,9 +3,8 @@
     Reset Password
 @endsection
 @section('content')
-    @include('component.gust.pages.userResetPassword')
+    @include('componentss.gust.pages.userResetPassword')
 @endsection
 @push('scripts')
     <script src="{{ asset('gust/js/gustResetPassword.js') }}"></script>
 @endpush
-    

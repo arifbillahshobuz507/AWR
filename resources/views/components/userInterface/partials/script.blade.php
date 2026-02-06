@@ -1,0 +1,11 @@
+<script src="{{ asset('userInterface/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('userInterface/js/jquery.min.js') }}"></script>
+<script src="{{ asset('userInterface/js/swiper-bundle.min.js') }}"></script>
+<script src="{{ asset('userInterface/js/carousel.js') }}"></script>
+<script src="{{ asset('userInterface/js/bootstrap-select.min.js') }}"></script>
+<script src="{{ asset('userInterface/js/lazysize.min.js') }}"></script>
+<script src="{{ asset('userInterface/js/wow.min.js') }}"></script>
+<script src="{{ asset('userInterface/js/parallaxie.js') }}"></script>
+<script src="{{ asset('userInterface/js/count-down.js') }}"></script>
+<script src="{{ asset('userInterface/js/main.js') }}"></script>
+<script src="{{ asset('userInterface/js/sibforms.js') }}" defer></script>

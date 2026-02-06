@@ -1,1 +1,1 @@
-@include('component.emails.sendOtp')
+@include('components.emails.sendOtp')
