@@ -18,7 +18,7 @@ class CategoryController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
-            $query = Category::with(['parent', 'user']);
+            $query = Category::with(['parent:id,name', 'user:id,title,email']);
 
             // Filter by parent_id if provided
             if ($request->has('parent_id')) {
@@ -35,7 +35,7 @@ class CategoryController extends Controller
             $categories = $query->orderByPriority()
                 ->orderBy('name')
                 ->get();
-
+            $categories->makeHidden(['user_id', 'parent_id', 'updated_at', 'created_at']);
             return ResponseHelper::success('Categories retrieved successfully', $categories, 200);
         } catch (\Exception $e) {
             return ResponseHelper::error('Failed to retrieve categories', $e->getMessage(), 500);

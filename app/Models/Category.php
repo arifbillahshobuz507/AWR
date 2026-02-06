@@ -38,29 +38,19 @@ class Category extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-
-    /**
-     * Scope to get categories with their children
-     */
+    //Scope to get categories with their children
     public function scopeWithChildren($query)
     {
         return $query->with(['children' => function ($q) {
             $q->orderBy('priority', 'asc')->orderBy('name', 'asc');
         }]);
     }
-
-    /**
-     * Scope to get root categories (no parent)
-     */
+    //Scope to get root categories (no parent)
     public function scopeRoot($query)
     {
         return $query->whereNull('parent_id');
     }
-
-    /**
-     * Scope to order by priority
-     */
+    //Scope to order by priority
     public function scopeOrderByPriority($query, $direction = 'asc')
     {
         return $query->orderByRaw('priority IS NULL, priority ' . $direction);
