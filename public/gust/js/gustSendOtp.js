@@ -1,5 +1,3 @@
-
-
 async function sendOtp() {
     const email = document.getElementById("email").value;
     const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -16,15 +14,13 @@ async function sendOtp() {
 
     try {
         showLoader();
-        const res = await axios.post("/send-otp", {
+        const res = await axios.post("/api/send-otp", {
             email: email,
         });
         hideLoader();
         if (res.data.status === "success") {
-            sessionStorage.setItem("email",email);
+            sessionStorage.setItem("email", email);
             successToast(res.data.message);
-            console.log(res.data.message);
-
             setTimeout(() => {
                 window.location.href = "verify-otp";
             }, 2000);

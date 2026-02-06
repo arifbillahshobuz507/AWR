@@ -13,7 +13,6 @@ Route::get('/404', function () {
 Route::fallback(function () {
     return redirect()->route('force.redirect');
 });
-Route::post('/send-otp', [AuthController::class, 'sendOtp']);
 
 
 // Frontend Routes
@@ -22,3 +21,6 @@ Route::get('/registration', [AuthController::class, 'userRegistration'])->name('
 Route::get('/send-otp', [AuthController::class, 'userSendOtp'])->name('sendOtp');
 Route::get('/verify-otp', [AuthController::class, 'userVerifyOtp'])->name('verifyOtp');
 Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::middleware('tokenVerify')->group(function () {
+    Route::get('/reset-password', [AuthController::class, 'userResetPassword']);
+});
