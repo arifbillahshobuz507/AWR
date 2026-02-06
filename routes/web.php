@@ -2,10 +2,9 @@
 
 use App\Http\Controllers\UserInterface\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserInterface\HomeController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Route::get('/404', function () {
     return view('pageNotFound.pageNotFound');
@@ -22,3 +21,4 @@ Route::get('/login', [AuthController::class, 'userLogin'])->name('login');
 Route::get('/registration', [AuthController::class, 'userRegistration'])->name('register');
 Route::get('/send-otp', [AuthController::class, 'userSendOtp'])->name('sendOtp');
 Route::get('/verify-otp', [AuthController::class, 'userVerifyOtp'])->name('verifyOtp');
+Route::get('/', [HomeController::class, 'home'])->name('home');
