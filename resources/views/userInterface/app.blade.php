@@ -203,7 +203,8 @@
                     <!-- Dynamic Categories -->
                     @foreach($categories as $category)
                     <div class="swiper-slide">
-                        <a href="{{ route('category.products', $category->id) }}" class="widget-collection style-circle hover-img">
+                        <a href="#" class="widget-collection style-circle hover-img">
+                            <!-- {{ route('category.products', $category->id) }} -->
                             <div class="collection_image img-style">
                                 @if($category->image)
                                     <img class="lazyload"

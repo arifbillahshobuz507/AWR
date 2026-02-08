@@ -21,6 +21,7 @@ Route::get('/registration', [AuthController::class, 'userRegistration'])->name('
 Route::get('/send-otp', [AuthController::class, 'userSendOtp'])->name('sendOtp');
 Route::get('/verify-otp', [AuthController::class, 'userVerifyOtp'])->name('verifyOtp');
 Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::get('/category/{id}/products', [HomeController::class, 'categoryProducts'])->name('category.products');
 Route::middleware('tokenVerify')->group(function () {
     Route::get('/reset-password', [AuthController::class, 'userResetPassword']);
 });

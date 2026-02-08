@@ -55,4 +55,14 @@ class Category extends Model
     {
         return $query->orderByRaw('priority IS NULL, priority ' . $direction);
     }
+        public function products(): HasMany
+    {
+        return $this->hasMany(Product::class); // Adjust based on your Product model
+    }
+    
+    // For eager loading with count
+    public function scopeWithProductCount($query)
+    {
+        return $query->withCount('products');
+    }
 }

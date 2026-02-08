@@ -126,4 +126,18 @@ class CategoryController extends Controller
             return ResponseHelper::error('Failed to search categories', $e->getMessage(), 500);
         }
     }
+    public function frontendCategories()
+{
+    try {
+        $categories = Category::whereNull('parent_id')
+            ->withCount('products')
+            ->orderBy('priority', 'asc')
+            ->orderBy('name', 'asc')
+            ->get(['id', 'name', 'image', 'priority']);
+
+        return ResponseHelper::success('Categories retrieved', $categories, 200);
+    } catch (\Exception $e) {
+        return ResponseHelper::error('Failed to load categories', $e->getMessage(), 500);
+    }
+}
 }
